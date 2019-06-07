@@ -41,6 +41,11 @@ class uporabnik:
             ans+="("+t[0][0]+"."+t[0][1]+"."+t[0][2]+","+t[1]+"),"
         ans+="}"
         this.spremembe=ans
+    def getMenu(this,datum):
+        for combo in this.delta:
+            if(combo[0]==datum):
+                return combo[1]
+        return 1
 
 class Model:
     def __init__(this):
@@ -71,6 +76,8 @@ class Model:
                 return user.geslo==password
         return False
     def registriraj(this,ime,geslo,geslo2,podjetje):
+        if " " in ime or " " in geslo or len(ime)==0 or len(geslo)==0:
+            return False
         for user in this.users:
             if user.ime==ime:
                 return False
@@ -87,3 +94,10 @@ class Model:
                 return True
         print("Nekaj je narobe v posodobitvah")
         return False
+    def getUser(this,ime):
+        for user in this.users:
+            if user.ime==ime:
+                return user
+        print("Uporabnika "+ime+" ni mogoče najti")
+        return False
+

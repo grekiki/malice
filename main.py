@@ -48,7 +48,7 @@ def glavna_stran():
     if(user==None):
         print("Hacker")
         redirect("../")
-    return template("strani/glavna_stran.tpl",ime=user)
+    return template("strani/glavna_stran.tpl",user=model.getUser(user))
 
 model=Model()
 run(host='localhost', port=8080, debug=True, reloader=True)
