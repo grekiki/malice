@@ -1,4 +1,3 @@
-a a GostilnaPriMari {}
-v v GostilnaPriMari {}
-grekiki grekiki Vidmar {}
+grekiki grekiki GostilnaPriMari {(7.6.2019,0),(8.6.2019,2),(17.6.2019,0),(22.6.2019,3)}
 mojca 2407 GostilnaPriMari {}
+
