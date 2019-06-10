@@ -20,10 +20,10 @@ def poskusi_registracijo():
     geslo2=request.forms.getunicode("password2")
     podjetje=request.forms.getunicode("podjetje")
     print("Poskus registracije osebe "+ime+" "+geslo+" "+geslo2+" "+podjetje)
-    ok=model.registriraj(ime,geslo,geslo2,podjetje)
+    response=model.registriraj(ime,geslo,geslo2,podjetje)
     print(len(model.users))
-    if not ok:
-        return template("strani/registracija.tpl",string="Registracija ni uspela")
+    if response!="Registracija je uspela":
+        return template("strani/registracija.tpl",string=response)
     else:
         return template("strani/uspesna_registracija") 
 
@@ -35,6 +35,7 @@ def login_page():
 def check_password():
     user=request.forms.getunicode("user")
     password=request.forms.getunicode("password")
+    print(user+" "+password)
     is_ok=model.check_password(user,password)
     if(is_ok):
         response.set_cookie("id",user)
@@ -49,6 +50,8 @@ def glavna_stran():
         print("Hacker")
         redirect("../")
     return template("strani/glavna_stran.tpl",user=model.getUser(user))
-
+@get("/date_change")
+def spremeni_podatke_na_datum():
+    pass
 model=Model()
 run(host='localhost', port=8080, debug=True, reloader=True)

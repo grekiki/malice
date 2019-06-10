@@ -55,7 +55,7 @@ class Model:
         file=open("podatki.txt","r")
         this.users=[]
         for line in file:
-            #print(line)
+            print(line)
             arr=line.split()
             ime=arr[0]
             geslo=arr[1]
@@ -77,15 +77,21 @@ class Model:
         return False
     def registriraj(this,ime,geslo,geslo2,podjetje):
         if " " in ime or " " in geslo or len(ime)==0 or len(geslo)==0:
-            return False
+            return "Ime ali geslo sta prekratka ali vsebujeta presledke"
+
+        if not all(ord(c) < 128 for c in ime):
+            return "Ime vsebuje čudne znake. Morda črke č, š,ž ali kaj podobnega."
+        if not all(ord(c) < 128 for c in geslo):
+            return "Geslo vsebuje čudne znake. Morda črke č, š,ž ali kaj podobnega."
+    
         for user in this.users:
             if user.ime==ime:
-                return False
+                return "Ime že obstaja"
         if(geslo!=geslo2):
-            return False
+            return "Gesli nista enaki"
         this.users.append(uporabnik(ime,geslo,podjetje,"{}"))
         this.writeSaveFile()
-        return True
+        return "Registracija je uspela"
     def dodajSpremembo(this,ime,datum,stevilo):
         for user in this.users:
             if(user.ime==ime):
