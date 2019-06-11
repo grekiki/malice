@@ -1,5 +1,22 @@
-import datetime
-import json
+from datetime import *
+
+class datum:
+    def __init__(this,dan,mesec,leto):
+        this.dan=dan
+        this.mesec=mesec
+        this.leto=leto
+    def delavni_dan(this):
+        dan = datetime.date(this.leto,this.mesec,this.dan)
+        if dan.weekday()>=5:
+            return False
+        file=open("datoteke/prazniki.txt","r")
+        for line in file:
+            if line==this.dan+"."+this.mesec+"."+this.leto:
+                return False
+        return True
+    def dan_v_tednu(this):
+        dan = datetime.date(this.leto,this.mesec,this.dan)
+        return dan.weekday():
 class uporabnik:
     def __init__(this,ime,geslo,podjetje,spremembe):
         this.ime=ime
@@ -51,7 +68,7 @@ class Model:
         this.readSaveFile()
     def readSaveFile(this):
         #print("read")
-        file=open("podatki.txt","r")
+        file=open("datoteke/podatki.txt","r")
         this.users=[]
         for line in file:
             #print(line)
@@ -64,7 +81,7 @@ class Model:
         file.close()
     def writeSaveFile(this):
         print("write")
-        file=open("podatki.txt","w")
+        file=open("datoteke/podatki.txt","w")
         for user in this.users:
             #print(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe)
             file.write(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe+"\n")
@@ -75,7 +92,7 @@ class Model:
             if user.ime==username:
                 return user.geslo==password
         return False
-    def registriraj(this,ime,geslo,geslo2,podjetje):
+    def registriraj(this,ime,geslo,geslo2,podjetje,datum):
         if " " in ime or " " in geslo or len(ime)==0 or len(geslo)==0:
             return "Ime ali geslo sta prekratka ali vsebujeta presledke"
 

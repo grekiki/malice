@@ -11,3 +11,4 @@ Lekarna
 GGM
 Cistilnica
 GostilnaPriMari
+GVS
