@@ -1,5 +1,5 @@
 from datetime import *
-
+import calendar
 class datum:
     def __init__(this,dan,mesec,leto):
         this.dan=dan
@@ -14,9 +14,13 @@ class datum:
             if line==this.dan+"."+this.mesec+"."+this.leto:
                 return False
         return True
-    def dan_v_tednu(this):
-        dan = datetime.date(this.leto,this.mesec,this.dan)
-        return dan.weekday():
+    def dan_v_tednu_string(this):
+        dan = datetime(this.leto,this.mesec,this.dan)
+        return ["Ponedeljek","Torek","Sreda","Cetrtek","Petek","Sobota","Nedelja"][dan.weekday()]
+    def dan_v_tednu_int(this):
+        dan = datetime(this.leto,this.mesec,this.dan)
+        return dan.weekday()
+
 class uporabnik:
     def __init__(this,ime,geslo,podjetje,spremembe):
         this.ime=ime
