@@ -25,6 +25,8 @@
     %ln=monthrange(dateNow.year,dateNow.month)[1]
     %displacement=dateInit.weekday()
     %month=dateNow.month
+    %color=["FF0000","00FF00","FF00FF","0000FF"]
+    %year=dateNow.year
     <table border="1">
     %p=0
     %for row in range(0,6):
@@ -35,13 +37,14 @@
             %elif p<displacement+ln:
                 %ans=p-displacement+1
                 %if ans==dateNow.day:
-                    <td bgcolor="FF0000">
-                %elif not user.getMenu((ans,month,dateNow.year))==1:
-                    <td bgcolor="FFFF00">
+                    <td bgcolor="000000">
+                %elif True:
+                    %ans2=color[user.getMenu((ans,month,dateNow.year))]
+                    <td bgcolor={{ans2}}>
                 %else:
                     <td>
                 %end
-                <form action="/date_change", method="get">
+                <form action="/date_change/{{ans}}.{{month}}.{{year}}", method="get">
                     <input type="submit" value={{ans}}.{{month}} name={{ans}}>
                 </form>
                 </td>
@@ -52,9 +55,10 @@
         %end
         </tr>
     %end
+    </table>
 </body>
 
-
+<a href="/download/junij2019.pdf" download>Jedilnik za junij 2019</a>
 <footer>
     Izdelava:Gregor Kikelj
 <footer>

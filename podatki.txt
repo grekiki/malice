@@ -1,4 +1,4 @@
-grekiki grekiki GostilnaPriMari {(7.6.2019,0),(8.6.2019,2),(17.6.2019,0),(22.6.2019,3)}
+grekiki grekiki GostilnaPriMari {(8.6.2019,0),(9.6.2019,0),(10.6.2019,3),(6.6.2019,3),(7.6.2019,3)}
 mojca 2407 GostilnaPriMari {}
 JanezNovak spamspam FerroCrtalic {}
 cezam spam FerroCrtalic {}

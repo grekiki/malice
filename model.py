@@ -7,9 +7,9 @@ class uporabnik:
         this.podjetje=podjetje
         this.spremembe=spremembe
         this.delta=this.parse(spremembe)
-        print(this.ime+" "+str(this.delta))
+        #print(this.ime+" "+str(this.delta))
     def parse(this,spremembe):
-        seznam=[]
+        seznam={}
         oklepaj=-1
         vejica=-1
         zaklepaj=-1
@@ -24,28 +24,27 @@ class uporabnik:
                 #print(ok)
                 #print(spremembe[1+oklepaj:vejica]+" "+spremembe[1+vejica:zaklepaj])
                 ls=spremembe[1+oklepaj:vejica].split(".")
-                seznam.append(((int(ls[0]),int(ls[1]),int(ls[2])),int(spremembe[1+vejica:zaklepaj])))
+                seznam[(int(ls[0]),int(ls[1]),int(ls[2]))]=int(spremembe[1+vejica:zaklepaj])
+        #print(seznam)
         return seznam
     def sprememba(this,datum,stevilo):
-        for i in range(0,len(delta)):
-            t=this.delta[i]
-            if(t[0]==datum):
-                this.delta[i]=(datum,stevilo)
-                updateStr()
-                return
-        this.delta.append((datum,stevilo))
+        this.delta[datum]=stevilo
+        #print(this.delta)
         this.updateStr()
     def updateStr(this):
         ans="{"
+        #print("update")
         for t in this.delta:
-            ans+="("+t[0][0]+"."+t[0][1]+"."+t[0][2]+","+t[1]+"),"
+            #print(t)
+            ans+="("+str(t[0])+"."+str(t[1])+"."+str(t[2])+","+str(this.delta[t])+"),"
+        ans=ans[:-1]
         ans+="}"
         this.spremembe=ans
     def getMenu(this,datum):
-        for combo in this.delta:
-            if(combo[0]==datum):
-                return combo[1]
-        return 1
+        if not datum in this.delta:
+            return 1
+        else:
+            return this.delta[datum]
 
 class Model:
     def __init__(this):
@@ -55,7 +54,7 @@ class Model:
         file=open("podatki.txt","r")
         this.users=[]
         for line in file:
-            print(line)
+            #print(line)
             arr=line.split()
             ime=arr[0]
             geslo=arr[1]
@@ -67,9 +66,10 @@ class Model:
         print("write")
         file=open("podatki.txt","w")
         for user in this.users:
-            print(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe)
+            #print(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe)
             file.write(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe+"\n")
         file.close()
+        this.readSaveFile()
     def check_password(this,username,password):
         for user in this.users:
             if user.ime==username:
@@ -92,14 +92,6 @@ class Model:
         this.users.append(uporabnik(ime,geslo,podjetje,"{}"))
         this.writeSaveFile()
         return "Registracija je uspela"
-    def dodajSpremembo(this,ime,datum,stevilo):
-        for user in this.users:
-            if(user.ime==ime):
-                user.sprememba(datum,stevilo)
-                writeSaveFile()
-                return True
-        print("Nekaj je narobe v posodobitvah")
-        return False
     def getUser(this,ime):
         for user in this.users:
             if user.ime==ime:

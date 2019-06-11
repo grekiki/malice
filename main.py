@@ -50,8 +50,30 @@ def glavna_stran():
         print("Hacker")
         redirect("../")
     return template("strani/glavna_stran.tpl",user=model.getUser(user))
-@get("/date_change")
-def spremeni_podatke_na_datum():
-    pass
+
+@get("/date_change/<date>")
+def spremeni_podatke_na_datum(date):
+    user=request.get_cookie("id")
+    dan=date.split(".")[0]
+    mesec=date.split(".")[1]
+    leto=date.split(".")[2]
+    return template("strani/sprememba.tpl",user=model.getUser(user),day=dan,month=mesec,year=leto)
+
+@get("/change_menu/<date>")
+def spremeni_podatke(date):
+    print("lol")
+    user=request.get_cookie("id")
+    dan=int(date.split(".")[0])
+    mesec=int(date.split(".")[1])
+    leto=int(date.split(".")[2])
+    stevilo=int(date.split(".")[3])
+    model.getUser(user).sprememba((dan,mesec,leto),stevilo)
+    model.writeSaveFile()
+    redirect("/main_inside")
+
+@route('/download/<ime>')
+def download(ime):
+    return static_file(ime, root="datoteke")
+
 model=Model()
 run(host='localhost', port=8080, debug=True, reloader=True)
