@@ -1,8 +1,17 @@
 % rebase('base.tpl')
 %from model import *
+%from datetime import *
 %username=user.ime
 %podjetje=user.podjetje
+%ctime=datetime.now()
+%mindate=datum((ctime+timedelta(days=1)).day,(ctime+timedelta(days=1)).month,(ctime+timedelta(days=1)).year)
+%if(ctime.hour>12):
+%   mindate=datum((ctime+timedelta(days=2)).day,(ctime+timedelta(days=2)).month,(ctime+timedelta(days=2)).year)
+%end
 <h1>Tukaj si izberete menije za vsak dan posebej.</h1>
+<form action="/access/main_inside" method="get">
+    <input type="submit" value="Nazaj">
+</form>
 <%
     file=open("datoteke/jedilnik.txt","r")
     while True:
@@ -12,46 +21,35 @@
         end
         t=s.split(".")
         dat=datum(int(t[0]),int(t[1]),int(t[2]))
+        s0="Odjava"
         s1=file.readline()[1:]
         s2=file.readline()[1:]
         s3=file.readline()[1:]
-        s4="Odjava"
+        s4="ocvrti sir s prilogo in solato"
+        s5="mesana solata s tuno"
+        s6="mesana solata s piscancjimi trakci"
+        s7="sadna malica, ki vsebuje 0,70kg sadja in 0,5l navadnega jogurta"
+        arr=[s0,s1,s2,s3,s4,s5,s6,s7]
+        if(dat<mindate):
+            continue
+        end
 %>
     <p>
         {{dat.dan_v_tednu_string()}} {{s}}<br>
-        <form action="/access/narocilo/{{str(dat)+".1"}}" method="get">
-            
-            %if user.getMenu(dat)==1:
-                <input type="image" src="/img/potrdi.png" border="0" alt="Manjka slika" style="width: 20px;">
+        %for i in range(0,len(arr)):
+        <form action="/access/narocilo/{{str(dat)+"."+str(i)}}" method="post">
+             %if user.getMenu(dat)==i:
+                <input type="image" src="/img/potrdi.png" border="0" alt="Manjka slika" style="width: 20px;"><b>
             %else:
                 <input type="image" src="/img/zavrni.png" border="0" alt="Manjka slika" style="width: 20px;">
             %end
-            {{s1}}<br>
-        </form>
-        <form action="/access/narocilo/{{str(dat)+".2"}}" method="get">
-            %if user.getMenu(dat)==2:
-                <input type="image" src="/img/potrdi.png" border="0" alt="Manjka slika" style="width: 20px;">
-            %else:
-                <input type="image" src="/img/zavrni.png" border="0" alt="Manjka slika" style="width: 20px;">
+            {{arr[i]}}<br>
+            %if user.getMenu(dat)==i:
+                </b>
             %end
-            {{s2}}<br>
         </form>
-        <form action="/access/narocilo/{{str(dat)+".3"}}" method="get">
-             %if user.getMenu(dat)==3:
-                <input type="image" src="/img/potrdi.png" border="0" alt="Manjka slika" style="width: 20px;">
-            %else:
-                <input type="image" src="/img/zavrni.png" border="0" alt="Manjka slika" style="width: 20px;">
-            %end
-            {{s3}}<br>
-        </form>
-        <form action="/access/narocilo/{{str(dat)+".0"}}" method="get">
-             %if user.getMenu(dat)==0:
-                <input type="image" src="/img/potrdi.png" border="0" alt="Manjka slika" style="width: 20px;">
-            %else:
-                <input type="image" src="/img/zavrni.png" border="0" alt="Manjka slika" style="width: 20px;">
-            %end
-            {{s4}}<br><br>
-        </form>
+        %end
+        <br>
     </p>
 %end
 %file.close()

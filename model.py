@@ -11,6 +11,20 @@ class datum:
         return str(this)==str(other)
     def __hash__(this):
         return hash(str(this))
+    def cmp(this,other):
+        if(this==other):
+            return 0
+        if(not this.leto==other.leto):
+            return this.leto-other.leto
+        if(not this.mesec==other.mesec):
+            return this.mesec-other.mesec
+        if(not this.dan==other.dan):
+            return this.dan-other.dan
+        print("napaka v primerjanju datumov")
+        return 0 
+    def __lt__(this,other):
+        return this.cmp(other)<0
+
     def delavni_dan(this):
         dan = datetime.date(this.leto,this.mesec,this.dan)
         if dan.weekday()>=5:
@@ -69,7 +83,7 @@ class uporabnik:
         this.spremembe=ans
     def getMenu(this,datum):
         if not datum in this.delta:
-            return 1
+            return 0
         else:
             return this.delta[datum]
 

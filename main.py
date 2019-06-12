@@ -38,14 +38,14 @@ def check_password():
     print(user+" "+password)
     is_ok=model.check_password(user,password)
     if(is_ok):
-        response.set_cookie("id",user)
+        response.set_cookie("id",user,secret='gostilnaprimari')
         redirect("../access/main_inside")
     else:
         return template("strani/start/login.tpl",string="Napačno geslo")
 
 @get("/access/main_inside")
 def glavna_stran():
-    user=request.get_cookie("id")
+    user=request.get_cookie("id",secret='gostilnaprimari')
     if(user==None):
         print("Hacker")
         redirect("../")
@@ -54,12 +54,12 @@ def glavna_stran():
 
 @get("/access/narocila")
 def glavna_stran():
-    user=request.get_cookie("id")
+    user=request.get_cookie("id",secret='gostilnaprimari')
     return template("strani/access/narocila.tpl",user=model.getUser(user))
 
-@get("/access/narocilo/<input>")
+@post("/access/narocilo/<input>")
 def obdelaj_spremembo(input):
-    user=model.getUser(request.get_cookie("id"))
+    user=model.getUser(request.get_cookie("id",secret='gostilnaprimari'))
     dan=int(input.split(".")[0])
     mesec=int(input.split(".")[1])
     leto=int(input.split(".")[2])
@@ -68,7 +68,41 @@ def obdelaj_spremembo(input):
     model.writeSaveFile()
     redirect("/access/narocila")
 
-@route('/download/<ime>')
+@get("/access/spremeni_ime")
+def spremeni_ime():
+    return template("strani/access/spremeni_ime.tpl",string="")
+@post("/access/spremeni_ime")
+def spremeni_ime_post():
+    user=model.getUser(request.get_cookie("id",secret='gostilnaprimari'))
+    nime=request.forms.getunicode("ime")
+    if not all(ord(c) < 128 for c in nime):
+        return template("strani/access/spremeni_ime.tpl",string="Ime vsebuje cudne znake. Morda sumnike.")
+    if " " in nime:
+         return template("strani/access/spremeni_ime.tpl",string="Ime vsebuje presledke")
+    response.set_cookie("id",nime,path="/",secret='gostilnaprimari')
+    user.ime=nime
+    model.writeSaveFile()
+    redirect("/access/main_inside")
+
+@get("/access/spremeni_geslo")
+def spremeni_geslo():
+    return template("strani/access/spremeni_geslo.tpl",string="")
+@post("/access/spremeni_geslo")
+def spremeni_geslo_post():
+    user=model.getUser(request.get_cookie("id",secret='gostilnaprimari'))
+    ngeslo=request.forms.getunicode("geslo1")
+    ngeslo2=request.forms.getunicode("geslo2")
+    if not all(ord(c) < 128 for c in ngeslo):
+        return template("strani/access/spremeni_geslo.tpl",string="Geslo vsebuje cudne znake. Morda sumnike.")
+    if " " in ngeslo:
+         return template("strani/access/spremeni_geslo.tpl",string="Geslo vsebuje presledke")
+    if(not ngeslo==ngeslo2):
+        return template("strani/access/spremeni_geslo.tpl",string="Gesli nista enaki")
+    user.geslo=ngeslo
+    model.writeSaveFile()
+    redirect("/access/main_inside")
+
+@get('/download/<ime>')
 def download(ime):
     return static_file(ime, root="datoteke")
 
