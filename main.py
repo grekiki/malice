@@ -5,13 +5,13 @@ from model import *
 def mainpage():
     user=request.get_cookie("id")
     if(user==None):
-        return template("strani/intro.tpl")
+        return template("strani/start/intro.tpl")
     else:
-        redirect("../main_inside")
+        redirect("../access/main_inside")
 
 @get("/register")
 def stran_registracija():
-    return template("strani/registracija.tpl",string="Vpišite svoje podatke")
+    return template("strani/start/registracija.tpl",string="Vpišite svoje podatke")
 
 @post("/register_submit")
 def poskusi_registracijo():
@@ -23,13 +23,13 @@ def poskusi_registracijo():
     response=model.registriraj(ime,geslo,geslo2,podjetje)
     print(len(model.users))
     if response!="Registracija je uspela":
-        return template("strani/registracija.tpl",string=response)
+        return template("strani/start/registracija.tpl",string=response)
     else:
-        return template("strani/uspesna_registracija") 
+        return template("strani/start/uspesna_registracija") 
 
 @get("/login")
 def login_page():
-    return template("strani/login.tpl",string="Vpišite uporabniško ime in geslo")
+    return template("strani/start/login.tpl",string="Vpišite uporabniško ime in geslo")
     
 @post("/login_submit")
 def check_password():
@@ -39,22 +39,35 @@ def check_password():
     is_ok=model.check_password(user,password)
     if(is_ok):
         response.set_cookie("id",user)
-        redirect("../main_inside")
+        redirect("../access/main_inside")
     else:
-        return template("strani/login.tpl",string="Napačno geslo")
+        return template("strani/start/login.tpl",string="Napačno geslo")
 
-@get("/main_inside")
+@get("/access/main_inside")
 def glavna_stran():
     user=request.get_cookie("id")
     if(user==None):
         print("Hacker")
         redirect("../")
-    return template("strani/glavna_stran.tpl",user=model.getUser(user))
+    return template("strani/access/glavna_stran.tpl",user=model.getUser(user))
 
+
+@get("/access/narocila")
+def glavna_stran():
+    user=request.get_cookie("id")
+    return template("strani/access/narocila.tpl",user=model.getUser(user))
+
+@get("/access/narocilo/<input>")
+def obdelaj_spremembo(input):
+    redirect("/access/narocila")
 
 @route('/download/<ime>')
 def download(ime):
     return static_file(ime, root="datoteke")
+
+@get("/img/<file>")
+def img(ime):
+    return static_file(ime, root='slike')
 
 model=Model()
 run(host='0.0.0.0', port=8080, debug=True, reloader=True)

@@ -2,8 +2,7 @@
 %from model import *
 %username=user.ime
 %podjetje=user.podjetje
-<h1>To je spletna stran za naročanje malic.</h1>
-<p>Pozdravljeni {{username}} iz {{podjetje}}. Sedaj ste prijavljeni.</p>
+<h1>Tukaj si izberete menije za vsak dan posebej.</h1>
 <%
     file=open("datoteke/jedilnik.txt","r")
     while True:
