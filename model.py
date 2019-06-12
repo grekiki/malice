@@ -26,15 +26,6 @@ class datum:
     def __lt__(this,other):
         return this.cmp(other)<0
 
-    def delavni_dan(this):
-        dan = datetime.date(this.leto,this.mesec,this.dan)
-        if dan.weekday()>=5:
-            return False
-        file=open("datoteke/prazniki.txt","r")
-        for line in file:
-            if line==this.dan+"."+this.mesec+"."+this.leto:
-                return False
-        return True
     def dan_v_tednu_string(this):
         dan = datetime(this.leto,this.mesec,this.dan)
         return ["Ponedeljek","Torek","Sreda","Cetrtek","Petek","Sobota","Nedelja"][dan.weekday()]
@@ -71,6 +62,8 @@ class uporabnik:
         return seznam
     def sprememba(this,datum,stevilo):
         this.delta[datum]=stevilo
+        if(stevilo==0):
+            this.delta.pop[datum]
         #print(this.delta)
         this.updateStr()
     def updateStr(this):
@@ -87,6 +80,19 @@ class uporabnik:
             return 0
         else:
             return this.delta[datum]
+    def count_previous_month(this):
+        count=0
+        year=datetime.today().year
+        month=datetime.today().month
+        if(month==1):
+            month=12
+            year-=1
+        else:
+            month-=1
+        for day in range(1,32):
+            if(this.getMenu(datum(day,month,year))!=0):
+                count+=1
+        return count
 class podjetje:
     def __init__(this,ime,geslo):
         this.ime=ime

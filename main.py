@@ -63,6 +63,7 @@ def company_login_page():
 
 @get("/company/main_inside")
 def glavna_stran_podjetje():
+    response.delete_cookie("id",path="/")
     company=request.get_cookie("company",secret="gostilnaprimari")
     if(company==None):
         print("Hacker podjetje")
@@ -79,10 +80,10 @@ def preusmeri(ime):
     response.set_cookie("id",ime,secret='gostilnaprimari',path="/")
     redirect("/access/main_inside")
 
-
-
-
-
+@get("/company/odjava")
+def odjava():
+    response.delete_cookie("company",path="/")
+    redirect("/access/main_inside")
 
 @get("/access/main_inside")
 def glavna_stran():

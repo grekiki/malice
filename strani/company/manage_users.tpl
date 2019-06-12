@@ -5,8 +5,9 @@
 </form>
 %for user in model.users:
 %   if user.podjetje==podjetje:
-<form action="/company/redirect/{{user.ime}}" method="get">
-    <input type="submit" value={{user.ime}}>
-</form>
+        <form action="/company/redirect/{{user.ime}}" method="get">
+            <input type="submit" value={{user.ime}}>
+            Prejsnji mesec je bilo narocenih {{user.count_previous_month()}} obrokov.
+        </form>
 %   end
 %end
