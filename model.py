@@ -87,7 +87,11 @@ class uporabnik:
             return 0
         else:
             return this.delta[datum]
-
+class podjetje:
+    def __init__(this,ime,geslo):
+        this.ime=ime
+        this.geslo=geslo
+    
 class Model:
     def __init__(this):
         this.readSaveFile()
@@ -100,9 +104,19 @@ class Model:
             arr=line.split()
             ime=arr[0]
             geslo=arr[1]
-            podjetje=arr[2]
+            podjetje1=arr[2]
             spremembe=arr[3]
-            this.users.append(uporabnik(ime,geslo,podjetje,spremembe))
+            this.users.append(uporabnik(ime,geslo,podjetje1,spremembe))
+        file.close()
+
+        file=open("datoteke/podjetja.txt","r")
+        this.podjetja=[]
+        for line in file:
+            #print(line)
+            arr=line.split()
+            ime=arr[0]
+            geslo=arr[1]
+            this.podjetja.append(podjetje(ime,geslo))
         file.close()
     def writeSaveFile(this):
         print("write")
@@ -111,11 +125,21 @@ class Model:
             #print(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe)
             file.write(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe+"\n")
         file.close()
+        file=open("datoteke/podjetja.txt","w")
+        for podjetje in this.podjetja:
+            #print(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe)
+            file.write(podjetje.ime+" "+podjetje.geslo+"\n")
+        file.close()
         this.readSaveFile()
     def check_password(this,username,password):
         for user in this.users:
             if user.ime==username:
                 return this.verify_password(user.geslo,password)
+        return False
+    def check_password_company(this,podjetje,geslo):
+        for p in this.podjetja:
+            if p.ime==podjetje:
+                return this.verify_password(p.geslo,geslo)
         return False
     def registriraj(this,ime,geslo,geslo2,podjetje):
         #print(ime+" "+geslo)

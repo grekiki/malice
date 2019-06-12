@@ -45,14 +45,53 @@ def check_password():
 
 @get("/company_login")
 def company_login_page():
+    return template("strani/start/company_login.tpl",string="")
+
+@post("/company_login")
+def company_login_page():
+    podjetje=request.forms.getunicode("podjetje")
+    password=request.forms.getunicode("password")
+    print(podjetje+" "+password)
+    is_ok=model.check_password_company(podjetje,password)
+    if(is_ok):
+        response.set_cookie("company",podjetje,secret='gostilnaprimari')
+        redirect("../company/main_inside")
+    else:
+        return template("strani/start/company_login.tpl",string="Napačno geslo")
+
+
+
+@get("/company/main_inside")
+def glavna_stran_podjetje():
+    company=request.get_cookie("company",secret="gostilnaprimari")
+    if(company==None):
+        print("Hacker podjetje")
+        redirect("/")
+    return template("strani/company/main_inside_podjetje.tpl",podjetje=company)
+
+@get("/company/manage_users")
+def glavna_stran_podjetje():
+    company=request.get_cookie("company",secret="gostilnaprimari")
+    return template("strani/company/manage_users.tpl",model=model,podjetje=company)
+
+@get("/company/redirect/<ime>")
+def preusmeri(ime):
+    response.set_cookie("id",ime,secret='gostilnaprimari',path="/")
+    redirect("/access/main_inside")
+
+
+
+
+
 
 @get("/access/main_inside")
 def glavna_stran():
     user=request.get_cookie("id",secret='gostilnaprimari')
+    company=request.get_cookie("company",secret="gostilnaprimari")
     if(user==None):
         print("Hacker")
-        redirect("../")
-    return template("strani/access/glavna_stran.tpl",user=model.getUser(user))
+        redirect("/")
+    return template("strani/access/glavna_stran.tpl",user=model.getUser(user),company=(company!=None))
 
 @get("/access/narocila")
 def narocila():
@@ -75,17 +114,17 @@ def spremeni_ime():
     return template("strani/access/spremeni_ime.tpl",string="")
 @post("/access/spremeni_ime")
 def spremeni_ime_post():
-    user=model.getUser(request.get_cookie("id",secret='gostilnaprimari'))
+    user1=model.getUser(request.get_cookie("id",secret="gostilnaprimari"))
     nime=request.forms.getunicode("ime")
     for user in model.users:
         if user.ime==nime:
             return template("strani/access/spremeni_ime.tpl",string="Ime je ze uporabljeno.")
-   if not all(ord(c) < 128 for c in nime):
+    if not all(ord(c) < 128 for c in nime):
         return template("strani/access/spremeni_ime.tpl",string="Ime vsebuje cudne znake. Morda sumnike.")
     if " " in nime:
          return template("strani/access/spremeni_ime.tpl",string="Ime vsebuje presledke")
     response.set_cookie("id",nime,path="/",secret='gostilnaprimari')
-    user.ime=nime
+    user1.ime=nime
     model.writeSaveFile()
     redirect("/access/main_inside")
 
