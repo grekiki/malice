@@ -13,3 +13,6 @@
 <form action="/access/spremeni_geslo" method="get">
     <input type="submit" value="Spremeni geslo">
 </form>
+<form action="/access/odjava" method="get">
+    <input type="submit" value="Odjava">
+</form>

@@ -1,6 +1,6 @@
 from bottle import *
 from model import *
-
+from random import randint
 @get("/")
 def mainpage():
     user=request.get_cookie("id")
@@ -43,6 +43,9 @@ def check_password():
     else:
         return template("strani/start/login.tpl",string="Napačno geslo")
 
+@get("/company_login")
+def company_login_page():
+
 @get("/access/main_inside")
 def glavna_stran():
     user=request.get_cookie("id",secret='gostilnaprimari')
@@ -51,9 +54,8 @@ def glavna_stran():
         redirect("../")
     return template("strani/access/glavna_stran.tpl",user=model.getUser(user))
 
-
 @get("/access/narocila")
-def glavna_stran():
+def narocila():
     user=request.get_cookie("id",secret='gostilnaprimari')
     return template("strani/access/narocila.tpl",user=model.getUser(user))
 
@@ -75,7 +77,10 @@ def spremeni_ime():
 def spremeni_ime_post():
     user=model.getUser(request.get_cookie("id",secret='gostilnaprimari'))
     nime=request.forms.getunicode("ime")
-    if not all(ord(c) < 128 for c in nime):
+    for user in model.users:
+        if user.ime==nime:
+            return template("strani/access/spremeni_ime.tpl",string="Ime je ze uporabljeno.")
+   if not all(ord(c) < 128 for c in nime):
         return template("strani/access/spremeni_ime.tpl",string="Ime vsebuje cudne znake. Morda sumnike.")
     if " " in nime:
          return template("strani/access/spremeni_ime.tpl",string="Ime vsebuje presledke")
@@ -98,9 +103,15 @@ def spremeni_geslo_post():
          return template("strani/access/spremeni_geslo.tpl",string="Geslo vsebuje presledke")
     if(not ngeslo==ngeslo2):
         return template("strani/access/spremeni_geslo.tpl",string="Gesli nista enaki")
-    user.geslo=ngeslo
+    user.geslo=model.hash_password(ngeslo)
     model.writeSaveFile()
     redirect("/access/main_inside")
+
+@get("/access/odjava")
+def odjava():
+    response.delete_cookie("id",path="/")
+    redirect("/")
+    
 
 @get('/download/<ime>')
 def download(ime):
@@ -112,4 +123,14 @@ def img(ime):
     return static_file(ime, root='slike')
 
 model=Model()
+#file1=open("datoteke/podjetja.txt","r")#uvoz racunov
+#for line in file1:
+#    ime=line.split(" ")[0]
+#    count=line.split(" ")[1]
+#    count=int(count)
+#    for i in range(count):
+#        geslo=str(randint(1000000000,9999999999))
+#        model.registriraj(str(ime)+str(i+1),geslo,geslo,ime)
+#file1.close()
+#model.writeSaveFile()
 run(host='0.0.0.0', port=8080, debug=True, reloader=True)

@@ -1,12 +1,11 @@
-FerroCrtalic
-PTZ
-Trata
-Aura
-Bravia
-Vidmar
-Solis
-Ercek
-Klobucar
-Lekarna
-Gaspersic
-Cistilnica
+FerroCrtalic 45
+PTZ 15
+Trata 5
+Aura 5
+Bravia 20
+Vidmar 25
+Solis 10
+Ercek 10
+Klobucar 5
+Lekarna 5
+Gaspersic 5

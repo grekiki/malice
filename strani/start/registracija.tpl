@@ -10,7 +10,7 @@
     <select name="podjetje">
         %file=open("datoteke/podjetja.txt","r")
         %for line in file:
-            <option value={{line}}>{{line}}</option>
+            <option value={{line.split(" ")[0]}}>{{line.split(" ")[0]}}</option>
         %end
     </select><br>
     <input type="submit" value="Registracija">

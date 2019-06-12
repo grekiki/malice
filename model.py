@@ -1,5 +1,6 @@
 from datetime import *
 import calendar
+import hashlib, binascii, os
 class datum:
     def __init__(this,dan,mesec,leto):
         this.dan=dan
@@ -114,9 +115,10 @@ class Model:
     def check_password(this,username,password):
         for user in this.users:
             if user.ime==username:
-                return user.geslo==password
+                return this.verify_password(user.geslo,password)
         return False
-    def registriraj(this,ime,geslo,geslo2,podjetje,datum):
+    def registriraj(this,ime,geslo,geslo2,podjetje):
+        #print(ime+" "+geslo)
         if " " in ime or " " in geslo or len(ime)==0 or len(geslo)==0:
             return "Ime ali geslo sta prekratka ali vsebujeta presledke"
 
@@ -130,7 +132,7 @@ class Model:
                 return "Ime že obstaja"
         if(geslo!=geslo2):
             return "Gesli nista enaki"
-        this.users.append(uporabnik(ime,geslo,podjetje,"{}"))
+        this.users.append(uporabnik(ime,this.hash_password(geslo),podjetje,"{}"))
         this.writeSaveFile()
         return "Registracija je uspela"
     def getUser(this,ime):
@@ -139,4 +141,18 @@ class Model:
                 return user
         print("Uporabnika "+ime+" ni mogoče najti")
         return False
-
+    def hash_password(this,password):#https://www.vitoshacademy.com/hashing-passwords-in-python/
+        salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
+        pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), 
+                                    salt, 100000)
+        pwdhash = binascii.hexlify(pwdhash)
+        return (salt + pwdhash).decode('ascii')
+    def verify_password(this,stored_password, provided_password):
+        salt = stored_password[:64]
+        stored_password = stored_password[64:]
+        pwdhash = hashlib.pbkdf2_hmac('sha512', 
+                                    provided_password.encode('utf-8'), 
+                                    salt.encode('ascii'), 
+                                    100000)
+        pwdhash = binascii.hexlify(pwdhash).decode('ascii')
+        return pwdhash == stored_password
