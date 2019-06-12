@@ -18,10 +18,40 @@
         s4="Odjava"
 %>
     <p>
-        {{dat.dan_v_tednu_string()}} {{s}}<br><br>
-        {{s1}}<br>
-        {{s2}}<br>
-        {{s3}}<br>
-        {{s4}}<br><br>
+        {{dat.dan_v_tednu_string()}} {{s}}<br>
+        <form action="/access/narocilo/{{str(dat)+".1"}}" method="get">
+            
+            %if user.getMenu(dat)==1:
+                <input type="image" src="/img/potrdi.png" border="0" alt="Manjka slika" style="width: 20px;">
+            %else:
+                <input type="image" src="/img/zavrni.png" border="0" alt="Manjka slika" style="width: 20px;">
+            %end
+            {{s1}}<br>
+        </form>
+        <form action="/access/narocilo/{{str(dat)+".2"}}" method="get">
+            %if user.getMenu(dat)==2:
+                <input type="image" src="/img/potrdi.png" border="0" alt="Manjka slika" style="width: 20px;">
+            %else:
+                <input type="image" src="/img/zavrni.png" border="0" alt="Manjka slika" style="width: 20px;">
+            %end
+            {{s2}}<br>
+        </form>
+        <form action="/access/narocilo/{{str(dat)+".3"}}" method="get">
+             %if user.getMenu(dat)==3:
+                <input type="image" src="/img/potrdi.png" border="0" alt="Manjka slika" style="width: 20px;">
+            %else:
+                <input type="image" src="/img/zavrni.png" border="0" alt="Manjka slika" style="width: 20px;">
+            %end
+            {{s3}}<br>
+        </form>
+        <form action="/access/narocilo/{{str(dat)+".0"}}" method="get">
+             %if user.getMenu(dat)==0:
+                <input type="image" src="/img/potrdi.png" border="0" alt="Manjka slika" style="width: 20px;">
+            %else:
+                <input type="image" src="/img/zavrni.png" border="0" alt="Manjka slika" style="width: 20px;">
+            %end
+            {{s4}}<br><br>
+        </form>
     </p>
 %end
+%file.close()

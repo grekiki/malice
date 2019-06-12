@@ -5,6 +5,12 @@ class datum:
         this.dan=dan
         this.mesec=mesec
         this.leto=leto
+    def __str__(this):
+        return str(this.dan)+"."+str(this.mesec)+"."+str(this.leto)
+    def __eq__(this,other):
+        return str(this)==str(other)
+    def __hash__(this):
+        return hash(str(this))
     def delavni_dan(this):
         dan = datetime.date(this.leto,this.mesec,this.dan)
         if dan.weekday()>=5:
@@ -45,7 +51,7 @@ class uporabnik:
                 #print(ok)
                 #print(spremembe[1+oklepaj:vejica]+" "+spremembe[1+vejica:zaklepaj])
                 ls=spremembe[1+oklepaj:vejica].split(".")
-                seznam[(int(ls[0]),int(ls[1]),int(ls[2]))]=int(spremembe[1+vejica:zaklepaj])
+                seznam[datum(int(ls[0]),int(ls[1]),int(ls[2]))]=int(spremembe[1+vejica:zaklepaj])
         #print(seznam)
         return seznam
     def sprememba(this,datum,stevilo):
@@ -56,8 +62,8 @@ class uporabnik:
         ans="{"
         #print("update")
         for t in this.delta:
-            #print(t)
-            ans+="("+str(t[0])+"."+str(t[1])+"."+str(t[2])+","+str(this.delta[t])+"),"
+            print(t)
+            ans+="("+str(t.dan)+"."+str(t.mesec)+"."+str(t.leto)+","+str(this.delta[t])+"),"
         ans=ans[:-1]
         ans+="}"
         this.spremembe=ans

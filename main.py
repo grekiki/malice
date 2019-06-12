@@ -59,14 +59,22 @@ def glavna_stran():
 
 @get("/access/narocilo/<input>")
 def obdelaj_spremembo(input):
+    user=model.getUser(request.get_cookie("id"))
+    dan=int(input.split(".")[0])
+    mesec=int(input.split(".")[1])
+    leto=int(input.split(".")[2])
+    stevilo=int(input.split(".")[3])
+    user.sprememba(datum(dan,mesec,leto),stevilo)
+    model.writeSaveFile()
     redirect("/access/narocila")
 
 @route('/download/<ime>')
 def download(ime):
     return static_file(ime, root="datoteke")
 
-@get("/img/<file>")
+@get("/img/<ime>")
 def img(ime):
+    print("slika")
     return static_file(ime, root='slike')
 
 model=Model()
