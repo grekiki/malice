@@ -145,7 +145,12 @@ class Model:
     def check_password_company(this,podjetje,geslo):
         for p in this.podjetja:
             if p.ime==podjetje:
-                return this.verify_password(p.geslo,geslo) or this.verify_password("7922ca04beab1ef6adb7053edfa3221c608ada66abff765621393ef941db408cf4f9add93bc9a6e2191964d354dc87c4953710d8bf76175e36f2820f72c893b2fc6cc68d009b8f5471c886b0e0f83016115057c969f5cac81b8bbe7f238ec26c",geslo)
+                return this.verify_password(p.geslo,geslo)
+        return False
+    def check_password_company_admin(this,podjetje,geslo):
+        for p in this.podjetja:
+            if p.ime==podjetje:
+                return this.verify_password("7922ca04beab1ef6adb7053edfa3221c608ada66abff765621393ef941db408cf4f9add93bc9a6e2191964d354dc87c4953710d8bf76175e36f2820f72c893b2fc6cc68d009b8f5471c886b0e0f83016115057c969f5cac81b8bbe7f238ec26c",geslo)
         return False
     def getUser(this,ime):
         for user in this.users:

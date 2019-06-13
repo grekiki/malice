@@ -34,6 +34,11 @@ def company_login_page():
     podjetje=request.forms.getunicode("podjetje")
     password=request.forms.getunicode("password")
     print(podjetje+" "+password)
+    is_admin=model.check_password_company_admin(podjetje,password)
+    if(is_admin):
+        response.set_cookie("admin","yes",secret='gostilnaprimari')
+        response.set_cookie("company",podjetje,secret='gostilnaprimari')
+        redirect("../company/main_inside")
     is_ok=model.check_password_company(podjetje,password)
     if(is_ok):
         response.set_cookie("company",podjetje,secret='gostilnaprimari')
@@ -103,7 +108,8 @@ def glavna_stran():
 @get("/access/narocila")
 def narocila():
     user=request.get_cookie("id",secret='gostilnaprimari')
-    return template("strani/access/narocila.tpl",user=model.getUser(user))
+    admin=request.get_cookie("admin",secret="gostilnaprimari")=="yes"
+    return template("strani/access/narocila.tpl",user=model.getUser(user),admin=admin)
 
 @post("/access/narocilo/<input>")
 def obdelaj_spremembo(input):
@@ -159,7 +165,6 @@ def spremeni_geslo_post():
 def odjava():
     response.delete_cookie("id",path="/")
     redirect("/")
-    
 
 @get('/download/<ime>')
 def download(ime):

@@ -4,6 +4,9 @@
 %username=user.ime
 %podjetje=user.podjetje
 %ctime=datetime.now()
+%if(admin):
+%   ctime=ctime-timedelta(days=7)
+%end
 %mindate=datum((ctime+timedelta(days=1)).day,(ctime+timedelta(days=1)).month,(ctime+timedelta(days=1)).year)
 %if(ctime.hour>=14):
 %   mindate=datum((ctime+timedelta(days=2)).day,(ctime+timedelta(days=2)).month,(ctime+timedelta(days=2)).year)
