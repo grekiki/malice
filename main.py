@@ -74,6 +74,8 @@ def spremeni_geslo_post():
     pod=model.getCompany(podjetje)
     ngeslo=request.forms.getunicode("geslo1")
     ngeslo2=request.forms.getunicode("geslo2")
+    if(len(ngeslo<5)):
+        return template("strani/company/spremeni_geslo.tpl",string="Geslo je prekratko.")
     if not all(ord(c) < 128 for c in ngeslo):
         return template("strani/company/spremeni_geslo.tpl",string="Geslo vsebuje cudne znake. Morda sumnike.")
     if " " in ngeslo:
@@ -141,6 +143,8 @@ def spremeni_geslo_post():
     user=model.getUser(request.get_cookie("id",secret='gostilnaprimari'))
     ngeslo=request.forms.getunicode("geslo1")
     ngeslo2=request.forms.getunicode("geslo2")
+    if(len(ngeslo<5)):
+        return template("strani/access/spremeni_geslo.tpl",string="Geslo je prekratko.")
     if not all(ord(c) < 128 for c in ngeslo):
         return template("strani/access/spremeni_geslo.tpl",string="Geslo vsebuje cudne znake. Morda sumnike.")
     if " " in ngeslo:
