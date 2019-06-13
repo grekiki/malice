@@ -25,7 +25,6 @@ class datum:
         return 0 
     def __lt__(this,other):
         return this.cmp(other)<0
-
     def dan_v_tednu_string(this):
         dan = datetime(this.leto,this.mesec,this.dan)
         return ["Ponedeljek","Torek","Sreda","Cetrtek","Petek","Sobota","Nedelja"][dan.weekday()]
@@ -93,11 +92,12 @@ class uporabnik:
             if(this.getMenu(datum(day,month,year))!=0):
                 count+=1
         return count
+
 class podjetje:
     def __init__(this,ime,geslo):
         this.ime=ime
         this.geslo=geslo
-    
+
 class Model:
     def __init__(this):
         this.readSaveFile()
@@ -147,24 +147,6 @@ class Model:
             if p.ime==podjetje:
                 return this.verify_password(p.geslo,geslo)
         return False
-    def registriraj(this,ime,geslo,geslo2,podjetje):
-        #print(ime+" "+geslo)
-        if " " in ime or " " in geslo or len(ime)==0 or len(geslo)==0:
-            return "Ime ali geslo sta prekratka ali vsebujeta presledke"
-
-        if not all(ord(c) < 128 for c in ime):
-            return "Ime vsebuje čudne znake. Morda črke č, š,ž ali kaj podobnega."
-        if not all(ord(c) < 128 for c in geslo):
-            return "Geslo vsebuje čudne znake. Morda črke č, š,ž ali kaj podobnega."
-    
-        for user in this.users:
-            if user.ime==ime:
-                return "Ime že obstaja"
-        if(geslo!=geslo2):
-            return "Gesli nista enaki"
-        this.users.append(uporabnik(ime,this.hash_password(geslo),podjetje,"{}"))
-        this.writeSaveFile()
-        return "Registracija je uspela"
     def getUser(this,ime):
         for user in this.users:
             if user.ime==ime:

@@ -9,24 +9,6 @@ def mainpage():
     else:
         redirect("../access/main_inside")
 
-@get("/register")
-def stran_registracija():
-    return template("strani/start/registracija.tpl",string="Vpišite svoje podatke")
-
-@post("/register_submit")
-def poskusi_registracijo():
-    ime=request.forms.getunicode("user")
-    geslo=request.forms.getunicode("password")
-    geslo2=request.forms.getunicode("password2")
-    podjetje=request.forms.getunicode("podjetje")
-    print("Poskus registracije osebe "+ime+" "+geslo+" "+geslo2+" "+podjetje)
-    response=model.registriraj(ime,geslo,geslo2,podjetje)
-    print(len(model.users))
-    if response!="Registracija je uspela":
-        return template("strani/start/registracija.tpl",string=response)
-    else:
-        return template("strani/start/uspesna_registracija") 
-
 @get("/login")
 def login_page():
     return template("strani/start/login.tpl",string="Vpišite uporabniško ime in geslo")
