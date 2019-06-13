@@ -49,7 +49,7 @@ def company_login_page():
 
 @get("/admin")
 def statistika():
-    if(randint(10,100)<20):
+    if(randint(10,100)<20):#ne sme vedno biti lag :)
         smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
         smtpObj.ehlo()    
         smtpObj.starttls()
