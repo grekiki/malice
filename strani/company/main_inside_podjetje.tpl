@@ -3,6 +3,9 @@
 <form action="/company/manage_users" method="get">
     <input type="submit" value="Upravljanje racunov"}>
 </form>
+<form action="/company/change_password" method="get">
+    <input type="submit" value="Sprememba gesla"}>
+</form>
 <form action="/company/odjava" method="get">
     <input type="submit" value="Odjava"}>
 </form>

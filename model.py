@@ -171,6 +171,12 @@ class Model:
                 return user
         print("Uporabnika "+ime+" ni mogoče najti")
         return False
+    def getCompany(this,ime):
+        for podjetje in this.podjetja:
+            if podjetje.ime==ime:
+                return podjetje
+        print("Podjetja "+ime+" ni mogoče najti")
+        return False
     def hash_password(this,password):#https://www.vitoshacademy.com/hashing-passwords-in-python/
         salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
         pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), 

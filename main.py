@@ -59,7 +59,9 @@ def company_login_page():
     else:
         return template("strani/start/company_login.tpl",string="Napačno geslo")
 
-
+@get("/admin")
+def statistika():
+    return template("strani/start/statistika.tpl",model=model)
 
 @get("/company/main_inside")
 def glavna_stran_podjetje():
@@ -79,6 +81,26 @@ def glavna_stran_podjetje():
 def preusmeri(ime):
     response.set_cookie("id",ime,secret='gostilnaprimari',path="/")
     redirect("/access/main_inside")
+
+@get("/company/change_password")
+def spremeni_geslo():
+    return template("strani/company/spremeni_geslo.tpl",string="")
+
+@post("/company/change_password")
+def spremeni_geslo_post():
+    podjetje=request.get_cookie("company",secret='gostilnaprimari')
+    pod=model.getCompany(podjetje)
+    ngeslo=request.forms.getunicode("geslo1")
+    ngeslo2=request.forms.getunicode("geslo2")
+    if not all(ord(c) < 128 for c in ngeslo):
+        return template("strani/company/spremeni_geslo.tpl",string="Geslo vsebuje cudne znake. Morda sumnike.")
+    if " " in ngeslo:
+         return template("strani/company/spremeni_geslo.tpl",string="Geslo vsebuje presledke")
+    if(not ngeslo==ngeslo2):
+        return template("strani/company/spremeni_geslo.tpl",string="Gesli nista enaki")
+    pod.geslo=model.hash_password(ngeslo)
+    model.writeSaveFile()
+    redirect("/company/main_inside")
 
 @get("/company/odjava")
 def odjava():
