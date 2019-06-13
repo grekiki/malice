@@ -46,10 +46,11 @@ while True:
             {{ans[i]}}x {{arr[i]}} <br>
         %end
         <br>
-        %for podjetje in model.podjetja:    
+        %for i in range(0,len(model.podjetja)):
+            %podjetje=model.podjetja[i]
             <h1>{{podjetje.ime}}</h1>
-            %for i in range(0,8):
-                {{ap[i]}}x {{arr[i]}} <br>
+            %for j in range(0,8):
+                {{cache[i][j]}}x {{arr[j]}} <br>
             %end
         %end       
 %end

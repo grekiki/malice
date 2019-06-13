@@ -11,7 +11,7 @@ def mainpage():
 
 @get("/login")
 def login_page():
-    return template("strani/start/login.tpl",string="Vpišite uporabniško ime in geslo")
+    return template("strani/start/login.tpl",string="Vpisite uporabnisko ime in geslo")
     
 @post("/login_submit")
 def check_password():
@@ -23,7 +23,7 @@ def check_password():
         response.set_cookie("id",user,secret='gostilnaprimari')
         redirect("../access/main_inside")
     else:
-        return template("strani/start/login.tpl",string="Napačno geslo")
+        return template("strani/start/login.tpl",string="Napacno geslo")
 
 @get("/company_login")
 def company_login_page():
@@ -39,7 +39,7 @@ def company_login_page():
         response.set_cookie("company",podjetje,secret='gostilnaprimari')
         redirect("../company/main_inside")
     else:
-        return template("strani/start/company_login.tpl",string="Napačno geslo")
+        return template("strani/start/company_login.tpl",string="Napacno geslo")
 
 @get("/admin")
 def statistika():
@@ -167,14 +167,4 @@ def img(ime):
     return static_file(ime, root='slike')
 
 model=Model()
-#file1=open("datoteke/podjetja.txt","r")#uvoz racunov
-#for line in file1:
-#    ime=line.split(" ")[0]
-#    count=line.split(" ")[1]
-#    count=int(count)
-#    for i in range(count):
-#        geslo=str(randint(1000000000,9999999999))
-#        model.registriraj(str(ime)+str(i+1),geslo,geslo,ime)
-#file1.close()
-#model.writeSaveFile()
 run(host='0.0.0.0', port=8080, debug=True, reloader=True)

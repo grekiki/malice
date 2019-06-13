@@ -4,14 +4,10 @@
 <form action="/login" method="get">
     <input type="submit" value="Prijava">
 </form>
-<!--
-<form action="/register" method="get">
-    <input type="submit" value="Registracija">
-</form>
--->     
 <form action="/company_login" method="get">
     <input type="submit" value="Nadzor podjetja">
 </form>
+
 
 
 

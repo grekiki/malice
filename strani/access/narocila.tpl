@@ -5,7 +5,7 @@
 %podjetje=user.podjetje
 %ctime=datetime.now()
 %mindate=datum((ctime+timedelta(days=1)).day,(ctime+timedelta(days=1)).month,(ctime+timedelta(days=1)).year)
-%if(ctime.hour>=12):
+%if(ctime.hour>=14):
 %   mindate=datum((ctime+timedelta(days=2)).day,(ctime+timedelta(days=2)).month,(ctime+timedelta(days=2)).year)
 %end
 <h1>Tukaj si izberete menije za vsak dan posebej.</h1>
