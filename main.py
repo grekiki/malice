@@ -166,10 +166,6 @@ def odjava():
     response.delete_cookie("id",path="/")
     redirect("/")
 
-@get('/download/<ime>')
-def download(ime):
-    return static_file(ime, root="datoteke")
-
 @get("/img/<ime>")
 def img(ime):
     print("slika")
