@@ -150,7 +150,7 @@ class Model:
     def check_password_company_admin(this,podjetje,geslo):
         for p in this.podjetja:
             if p.ime==podjetje:
-                return this.verify_password("7922ca04beab1ef6adb7053edfa3221c608ada66abff765621393ef941db408cf4f9add93bc9a6e2191964d354dc87c4953710d8bf76175e36f2820f72c893b2fc6cc68d009b8f5471c886b0e0f83016115057c969f5cac81b8bbe7f238ec26c",geslo)
+                return this.verify_password("8b1601a9728a972ba6014e8f52232e16fe23b03bee194d4071fbfe233123bd847e5f03fe95d405b25693e4fa94d1bdae5477ca0c17f60aa37a03f828cb5a94edced7ccafaaa5ef3eac6c6cf852b7d59da960b00b22001768235fac56c74f64ec",geslo)
         return False
     def getUser(this,ime):
         for user in this.users:
