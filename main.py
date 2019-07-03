@@ -190,6 +190,6 @@ def img(ime):
 
 model=Model()
 #run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-print(model.hash_password("mojca"))
+#print(model.hash_password("mojca"))
 port = os.environ.get('PORT', 5000)
 run(host='0.0.0.0', port=port, debug=True, reloader=True)
