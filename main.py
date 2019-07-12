@@ -187,9 +187,8 @@ def odjava():
 def img(ime):
     print("slika")
     return static_file(ime, root='slike')
-@get("/image_id/")
-def id():
-    redirect("http://blasze.tk/A81J43")
+
+
 model=Model()
 #run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 #print(model.hash_password("mojca"))
