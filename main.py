@@ -15,7 +15,7 @@ def make_backup():
         smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
         smtpObj.ehlo()    
         smtpObj.starttls()
-        smtpObj.login("backupmalice@gmail.com","5t4r3e2w1q1543ad")
+        smtpObj.login("backupmalice@gmail.com","q1w2e3r4t51543ad")
         s=""
         file=open("datoteke/podatki.txt")
         for line in file:
@@ -34,7 +34,7 @@ def make_backup():
 def read_backup():
     print("reading")
     mail = imaplib.IMAP4_SSL('imap.gmail.com')
-    mail.login('backupmalice@gmail.com', '5t4r3e2w1q1543ad')
+    mail.login('backupmalice@gmail.com', 'q1w2e3r4t51543ad')
     mail.list()
     # Out: list of "folders" aka labels in gmail.
     mail.select("inbox") # connect to inbox.
