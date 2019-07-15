@@ -2,6 +2,77 @@ from bottle import *
 from model import *
 from random import randint
 import smtplib
+import _thread
+import time
+import poplib
+import imaplib
+import email
+
+def make_backup():
+    while(True):
+        time.sleep(600)#600 ko bo mogoče
+        print("Making backup")
+        smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
+        smtpObj.ehlo()    
+        smtpObj.starttls()
+        smtpObj.login("backupmalice@gmail.com","5t4r3e2w1q1543ad")
+        s=""
+        file=open("datoteke/podatki.txt")
+        for line in file:
+            s+=line
+        smtpObj.sendmail('backupmalice@gmail.com', 'backupmalice@gmail.com',"Subject:podatki.txt\n\n"+s)
+        s=""
+        file.close()
+        file=open("datoteke/podjetja.txt")
+        for line in file:
+            s+=line
+        file.close()
+        smtpObj.sendmail('backupmalice@gmail.com', 'backupmalice@gmail.com',"Subject:podjetja.txt\n\n"+s)
+        smtpObj.quit()
+        print("Backup complete")
+
+def read_backup():
+    print("reading")
+    mail = imaplib.IMAP4_SSL('imap.gmail.com')
+    mail.login('backupmalice@gmail.com', '5t4r3e2w1q1543ad')
+    mail.list()
+    # Out: list of "folders" aka labels in gmail.
+    mail.select("inbox") # connect to inbox.
+    #print("lol")
+    _, data = mail.search(None, "ALL")
+    ids = data[0] # data is a list.
+    id_list = ids.split()
+
+    latest_email_id = id_list[-1]
+    result, data = mail.fetch(latest_email_id, "(RFC822)")
+    raw_email = data[0][1]
+    raw_email_string = raw_email.decode('utf-8')
+    email_message = email.message_from_string(raw_email_string)
+    for part in email_message.walk():
+        if part.get_content_type() == "text/plain":
+            body = part.get_payload(decode=True)
+            file=open("datoteke/podjetja.txt","w")
+            string=body.decode('utf-8').strip()+"\n\n"
+            for line in string.split("\n"):
+                file.write(line)
+            file.close()
+    
+    latest_email_id = id_list[-2]
+    result, data = mail.fetch(latest_email_id, "(RFC822)")
+    raw_email = data[0][1]
+    raw_email_string = raw_email.decode('utf-8')
+    email_message = email.message_from_string(raw_email_string)
+    for part in email_message.walk():
+        if part.get_content_type() == "text/plain":
+            body = part.get_payload(decode=True)
+            file=open("datoteke/podatki.txt","w")
+            string=body.decode('utf-8').strip()+"\n\n"
+            for line in string.split("\n"):
+                file.write(line)
+            print(string)
+            file.close()
+    print("Backup read from server. Go to launch. ")
+
 @get("/")
 def mainpage():
     user=request.get_cookie("id")
@@ -49,22 +120,6 @@ def company_login_page():
 
 @get("/admin")
 def statistika():
-    if(randint(10,100)<20):#ne sme vedno biti lag :)
-        smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
-        smtpObj.ehlo()    
-        smtpObj.starttls()
-        smtpObj.login("backupmalice@gmail.com","5t4r3e2w1q1543ad")
-        s=""
-        file=open("datoteke/podatki.txt")
-        for line in file:
-            s+=line
-        smtpObj.sendmail('backupmalice@gmail.com', 'backupmalice@gmail.com',"Subject:podatki.txt\n\n"+s)
-        s=""
-        file=open("datoteke/podjetja.txt")
-        for line in file:
-            s+=line
-        smtpObj.sendmail('backupmalice@gmail.com', 'backupmalice@gmail.com',"Subject:podjetja.txt\n\n"+s)
-        smtpObj.quit()
     return template("strani/start/statistika.tpl",model=model)
 
 @get("/company/main_inside")
@@ -188,8 +243,12 @@ def img(ime):
     print("slika")
     return static_file(ime, root='slike')
 
+print("started")
+read_backup()
 model=Model()
-#run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-#print(model.hash_password("mojca"))
+try:
+    thread.start_new_thread(make_backup,())
+except:
+    print("Error: unable to start thread")
 port = os.environ.get('PORT', 5000)
-run(host='0.0.0.0', port=port, debug=True, reloader=True)
+run(host='0.0.0.0', port=port, debug=True, reloader=False)
