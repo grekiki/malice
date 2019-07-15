@@ -69,7 +69,6 @@ def read_backup():
             string=body.decode('utf-8').strip()+"\n\n"
             for line in string.split("\n"):
                 file.write(line)
-            print(string)
             file.close()
     print("Backup read from server. Go to launch. ")
 
