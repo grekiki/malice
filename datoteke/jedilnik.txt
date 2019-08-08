@@ -166,87 +166,87 @@
 -golazeva juha+jogurt
 -prazena jetrca,petersiljckov krompir,solata
 -nadevan sv,vrat,priloga,solata
-1.8
+1.8.2019
 -pašta s klobaso
 -nadevana paprika,pire krompir,solata
 -mesna lazanja,solata
-2.8.
+2.8..2019
 -gobova mineštra+tiramisu
 -postrv po tržaško,priloga,solata
 -zrezek v omaki s siromin tartufi,kus kus,solata
-5.8
+5.8.2019
 -pasulj s klobaso	
 -špageti po bolonjsko
 -pečena rebrca,priloga,solata	
-6.8
+6.8.2019
 -krompirjev golaž+vinska rolada
 -vampi po tržaško	
 -piščančji zrezek z dušeno zelenjavo,istrski fužiji,solata
-7.8
+7.8.2019
 -jota z rebcami
 -mesni tortelini s paradižnikovo omako,solata
 -belokranjsko cvrtje,krompirjeva solata
-8.8
+8.8.2019
 -boranja+jabolčni zavitek
 -špageti milanes,solata
 -zrezek v gobovi omaki,vlivanci,solata
-9.8
+9.8.2019
 -ješprenj s šinjekom
 -pečena orada,blitva s krompirjem,solata
 -goveji golaž,kruhova rezina,solata
-12.8.
+12.8.2019
 -bučkina juha+puding
 -kotlet v somborski omaki,valvice,solata
 -piščančja rižota,solata
-13.8
+13.8.2019
 -pašta s rebrcami
 -sirovi štruklji,kumare v omaki
 -pečen piščanec,mlinci,solata
-14.8
+14.8.2019
 -obara+jogurt
 -pražena jetrca,priloga,solata
 -nadevana paprika,pire krompir,solata	
-16.8
+16.8.2019
 -pasulj s šinjekom
 -ocvrti oslič,krompirjeva solata
 -pečen sv.vrat,priloga,solata
-19.8
+19.8.2019
 -italijanska mineštra+puding
 -kuhana govedina,hren,pražen krompir,solata
 -tirolsko meso,polenta,solata
-20.8.
+20.8.2019
 -jota s klobaso
 -vampi po tržaško	
 -ocvrti piščanec,francoska solata
-21.8.
+21.8.2019
 -zelenjavna mineštra+kremšnita
 -makaronovo meso,solata
 -dunajski zrezek,mešana solata
-22.8.
+22.8.2019
 -ješprenj s klobaso
 -nadevana paprika,pire,solata
 -pečena kokoš,mlinci,solata
-23.8.
+23.8.2019
 -bosanski lonec+jogurt
 -špageti z morskimi sadeži,solata
 -zrezek parma (pariški zrezek s sirom),krompir z drobnjakom,solata
-26.8.
+26.8.2019
 -pašta z rebrcami
 -sir na žaru,popečena zelenjava s kuhanim krompirjem,solata
 -ciganski zrezek.kruhova rezina,solata
-27.8.
+27.8.2019
 -goveja juha z mesom+gibanica
 -sirovi štruklji,sladko zelje
 -pečena rebra s kožo,peteršiljčkov krompir,solata
-28.8.
+28.8.2019
 -pasulj s klobaso
 -pražena jetrca s prilogo,solata
 -sv.zrezek v gobovi omaki,zdrobov cmok,solata
-29.8.
+29.8.2019
 -golaževa juha+jogurt
 -pirini špageti z gamberi in bučkami v smetanovi omaki,solata
 -nadevan sv.vrat,džuveč riž,solata
-30.8.
+30.8.2019
 -jota s šinjekom
 -ocvrte škampove klešče,priloga,solata
 -pleskavica,krompir s porom,solata
