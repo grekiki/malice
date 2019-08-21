@@ -148,14 +148,14 @@ class Model:
                 this.jedilnik[dat] = [s0, s1, s2, s3, s4, s5, s6, s7]
 
     def statistika(this):
-        ans=None
-        arr=None
-        cache=None
+        ans = None
+        arr = None
+        cache = None
         ctime = datetime.now()
         mindate = datum(ctime.day, ctime.month, ctime.year)
         if(ctime.hour >= 12):
             mindate = datum((ctime+timedelta(days=1)).day, (ctime +
-                            timedelta(days=1)).month, (ctime+timedelta(days=1)).year)
+                                                            timedelta(days=1)).month, (ctime+timedelta(days=1)).year)
         with open("datoteke/jedilnik.txt", "r") as file:
             while True:
                 s = file.readline()
@@ -183,7 +183,7 @@ class Model:
                                 ap[meni] += 1
                                 ans[meni] += 1
                         cache.append(ap)
-                    return (ans, arr, cache,dan)
+                    return (ans, arr, cache, dan)
         return None
 
     def readSaveFile(this):
@@ -216,7 +216,7 @@ class Model:
             for user in this.users:
                 # print(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe)
                 file.write(user.ime+" "+user.geslo+" " +
-                        user.podjetje+" "+user.spremembe+"\n")
+                           user.podjetje+" "+user.spremembe+"\n")
             file.close()
         with open("datoteke/podjetja.txt", "w") as file:
             for podjetje in this.podjetja:

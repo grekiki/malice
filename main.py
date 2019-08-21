@@ -8,9 +8,10 @@ import poplib
 import imaplib
 import email
 
-username="backupmalice@gmail.com"
-password="q1w2e3r4t51543ad"
-secret="gostilnaPriMari"
+username = "backupmalice@gmail.com"
+password = "q1w2e3r4t51543ad"
+secret = "gostilnaPriMari"
+
 
 def make_backup():
     while(True):
@@ -25,7 +26,7 @@ def make_backup():
             for line in file:
                 s += line
             smtpObj.sendmail('backupmalice@gmail.com',
-                            'backupmalice@gmail.com', "Subject:podatki.txt\n\n"+s)
+                             'backupmalice@gmail.com', "Subject:podatki.txt\n\n"+s)
             s = ""
             file.close()
         with open("datoteke/podjetja.txt") as file:
@@ -41,9 +42,9 @@ def make_backup():
 def read_backup():
     print("reading")
     mail = imaplib.IMAP4_SSL('imap.gmail.com')
-    mail.login(username,password)
+    mail.login(username, password)
     mail.list()
-    #nekje sem to našel pa dela :)
+    # nekje sem to našel pa dela :)
     # Out: list of "folders" aka labels in gmail.
     mail.select("inbox")  # connect to inbox.
     # print("lol")
@@ -132,8 +133,8 @@ def company_login_page():
 
 @get("/admin")
 def statistika():
-    ans,arr,cache,dan=model.statistika()
-    return template("strani/start/statistika.tpl", model=model,ans=ans,arr=arr,cache=cache,dan=dan)
+    ans, arr, cache, dan = model.statistika()
+    return template("strani/start/statistika.tpl", model=model, ans=ans, arr=arr, cache=cache, dan=dan)
 
 
 @get("/company/main_inside")
@@ -202,7 +203,7 @@ def glavna_stran():
 def narocila():
     user = request.get_cookie("id", secret=secret)
     admin = request.get_cookie("admin", secret=secret) == "yes"
-    return template("strani/access/narocila.tpl", user=model.getUser(user), admin=admin,model=model)
+    return template("strani/access/narocila.tpl", user=model.getUser(user), admin=admin, model=model)
 
 
 @post("/access/narocilo/<input>")
@@ -280,6 +281,6 @@ model = Model()
 try:
     thread.start_new_thread(make_backup, ())
 except:
-   print("Error: unable to start thread")
+    print("Error: unable to start thread")
 port = os.environ.get('PORT', 5000)
 run(host='0.0.0.0', port=port, debug=True, reloader=False)
