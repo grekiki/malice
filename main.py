@@ -8,6 +8,9 @@ import poplib
 import imaplib
 import email
 
+username="backupmalice@gmail.com"
+password="q1w2e3r4t51543ad"
+secret="gostilnaPriMari"
 
 def make_backup():
     while(True):
@@ -16,19 +19,19 @@ def make_backup():
         smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
         smtpObj.ehlo()
         smtpObj.starttls()
-        smtpObj.login("backupmalice@gmail.com", "q1w2e3r4t51543ad")
+        smtpObj.login(username, password)
         s = ""
-        file = open("datoteke/podatki.txt")
-        for line in file:
-            s += line
-        smtpObj.sendmail('backupmalice@gmail.com',
-                         'backupmalice@gmail.com', "Subject:podatki.txt\n\n"+s)
-        s = ""
-        file.close()
-        file = open("datoteke/podjetja.txt")
-        for line in file:
-            s += line
-        file.close()
+        with open("datoteke/podatki.txt") as file:
+            for line in file:
+                s += line
+            smtpObj.sendmail('backupmalice@gmail.com',
+                            'backupmalice@gmail.com', "Subject:podatki.txt\n\n"+s)
+            s = ""
+            file.close()
+        with open("datoteke/podjetja.txt") as file:
+            for line in file:
+                s += line
+            file.close()
         smtpObj.sendmail('backupmalice@gmail.com',
                          'backupmalice@gmail.com', "Subject:podjetja.txt\n\n"+s)
         smtpObj.quit()
@@ -38,15 +41,15 @@ def make_backup():
 def read_backup():
     print("reading")
     mail = imaplib.IMAP4_SSL('imap.gmail.com')
-    mail.login('backupmalice@gmail.com', 'q1w2e3r4t51543ad')
+    mail.login(username,password)
     mail.list()
+    #nekje sem to našel pa dela :)
     # Out: list of "folders" aka labels in gmail.
     mail.select("inbox")  # connect to inbox.
     # print("lol")
     _, data = mail.search(None, "ALL")
     ids = data[0]  # data is a list.
     id_list = ids.split()
-
     latest_email_id = id_list[-1]
     result, data = mail.fetch(latest_email_id, "(RFC822)")
     raw_email = data[0][1]
@@ -55,11 +58,11 @@ def read_backup():
     for part in email_message.walk():
         if part.get_content_type() == "text/plain":
             body = part.get_payload(decode=True)
-            file = open("datoteke/podjetja.txt", "w")
-            string = body.decode('utf-8').strip()+"\n\n"
-            for line in string.split("\n"):
-                file.write(line)
-            file.close()
+            with open("datoteke/podjetja.txt", "w") as file:
+                string = body.decode('utf-8').strip()+"\n\n"
+                for line in string.split("\n"):
+                    file.write(line)
+                file.close()
 
     latest_email_id = id_list[-2]
     result, data = mail.fetch(latest_email_id, "(RFC822)")
@@ -69,11 +72,11 @@ def read_backup():
     for part in email_message.walk():
         if part.get_content_type() == "text/plain":
             body = part.get_payload(decode=True)
-            file = open("datoteke/podatki.txt", "w")
-            string = body.decode('utf-8').strip()+"\n\n"
-            for line in string.split("\n"):
-                file.write(line)
-            file.close()
+            with open("datoteke/podatki.txt", "w") as file:
+                string = body.decode('utf-8').strip()+"\n\n"
+                for line in string.split("\n"):
+                    file.write(line)
+                file.close()
     print("Backup read from server. Go to launch. ")
 
 
@@ -98,7 +101,7 @@ def check_password():
     print(user+" "+password)
     is_ok = model.check_password(user, password)
     if(is_ok):
-        response.set_cookie("id", user, secret='gostilnaprimari')
+        response.set_cookie("id", user, secret=secret)
         redirect("../access/main_inside")
     else:
         return template("strani/start/login.tpl", string="Napacno geslo")
@@ -116,12 +119,12 @@ def company_login_page():
     print(podjetje+" "+password)
     is_admin = model.check_password_company_admin(podjetje, password)
     if(is_admin):
-        response.set_cookie("admin", "yes", secret='gostilnaprimari')
-        response.set_cookie("company", podjetje, secret='gostilnaprimari')
+        response.set_cookie("admin", "yes", secret=secret)
+        response.set_cookie("company", podjetje, secret=secret)
         redirect("../company/main_inside")
     is_ok = model.check_password_company(podjetje, password)
     if(is_ok):
-        response.set_cookie("company", podjetje, secret='gostilnaprimari')
+        response.set_cookie("company", podjetje, secret=secret)
         redirect("../company/main_inside")
     else:
         return template("strani/start/company_login.tpl", string="Napacno geslo")
@@ -136,7 +139,7 @@ def statistika():
 @get("/company/main_inside")
 def glavna_stran_podjetje():
     response.delete_cookie("id", path="/")
-    company = request.get_cookie("company", secret="gostilnaprimari")
+    company = request.get_cookie("company", secret=secret)
     if(company == None):
         print("Hacker podjetje")
         redirect("/")
@@ -145,13 +148,13 @@ def glavna_stran_podjetje():
 
 @get("/company/manage_users")
 def glavna_stran_podjetje():
-    company = request.get_cookie("company", secret="gostilnaprimari")
+    company = request.get_cookie("company", secret=secret)
     return template("strani/company/manage_users.tpl", model=model, podjetje=company)
 
 
 @get("/company/redirect/<ime>")
 def preusmeri(ime):
-    response.set_cookie("id", ime, secret='gostilnaprimari', path="/")
+    response.set_cookie("id", ime, secret=secret, path="/")
     redirect("/access/main_inside")
 
 
@@ -162,7 +165,7 @@ def spremeni_geslo():
 
 @post("/company/change_password")
 def spremeni_geslo_post():
-    podjetje = request.get_cookie("company", secret='gostilnaprimari')
+    podjetje = request.get_cookie("company", secret=secret)
     pod = model.getCompany(podjetje)
     ngeslo = request.forms.getunicode("geslo1")
     ngeslo2 = request.forms.getunicode("geslo2")
@@ -187,8 +190,8 @@ def odjava():
 
 @get("/access/main_inside")
 def glavna_stran():
-    user = request.get_cookie("id", secret='gostilnaprimari')
-    company = request.get_cookie("company", secret="gostilnaprimari")
+    user = request.get_cookie("id", secret=secret)
+    company = request.get_cookie("company", secret=secret)
     if(user == None):
         print("Hacker")
         redirect("/")
@@ -197,14 +200,14 @@ def glavna_stran():
 
 @get("/access/narocila")
 def narocila():
-    user = request.get_cookie("id", secret='gostilnaprimari')
-    admin = request.get_cookie("admin", secret="gostilnaprimari") == "yes"
+    user = request.get_cookie("id", secret=secret)
+    admin = request.get_cookie("admin", secret=secret) == "yes"
     return template("strani/access/narocila.tpl", user=model.getUser(user), admin=admin,model=model)
 
 
 @post("/access/narocilo/<input>")
 def obdelaj_spremembo(input):
-    user = model.getUser(request.get_cookie("id", secret='gostilnaprimari'))
+    user = model.getUser(request.get_cookie("id", secret=secret))
     dan = int(input.split(".")[0])
     mesec = int(input.split(".")[1])
     leto = int(input.split(".")[2])
@@ -221,7 +224,7 @@ def spremeni_ime():
 
 @post("/access/spremeni_ime")
 def spremeni_ime_post():
-    user1 = model.getUser(request.get_cookie("id", secret="gostilnaprimari"))
+    user1 = model.getUser(request.get_cookie("id", secret=secret))
     nime = request.forms.getunicode("ime")
     for user in model.users:
         if user.ime == nime:
@@ -230,7 +233,7 @@ def spremeni_ime_post():
         return template("strani/access/spremeni_ime.tpl", string="Ime vsebuje cudne znake. Morda sumnike.")
     if " " in nime:
         return template("strani/access/spremeni_ime.tpl", string="Ime vsebuje presledke")
-    response.set_cookie("id", nime, path="/", secret='gostilnaprimari')
+    response.set_cookie("id", nime, path="/", secret=secret)
     user1.ime = nime
     model.writeSaveFile()
     redirect("/access/main_inside")
@@ -243,7 +246,7 @@ def spremeni_geslo():
 
 @post("/access/spremeni_geslo")
 def spremeni_geslo_post():
-    user = model.getUser(request.get_cookie("id", secret='gostilnaprimari'))
+    user = model.getUser(request.get_cookie("id", secret=secret))
     ngeslo = request.forms.getunicode("geslo1")
     ngeslo2 = request.forms.getunicode("geslo2")
     if(len(ngeslo) < 5):

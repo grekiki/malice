@@ -130,22 +130,22 @@ class Model:
 
     def readJedilnik(this):
         this.jedilnik = {}
-        file = open("datoteke/jedilnik.txt", "r")
-        while True:
-            s = file.readline()
-            if(len(s) == 0):
-                break
-            t = s.split(".")
-            dat = datum(int(t[0]), int(t[1]), int(t[2]))
-            s0 = "Odjava"
-            s1 = file.readline()[1:]
-            s2 = file.readline()[1:]
-            s3 = file.readline()[1:]
-            s4 = "ocvrti sir s prilogo in solato"
-            s5 = "mesana solata s tuno"
-            s6 = "mesana solata s piscancjimi trakci"
-            s7 = "sadna malica, ki vsebuje 0,70kg sadja in 0,5l navadnega jogurta"
-            this.jedilnik[dat] = [s0, s1, s2, s3, s4, s5, s6, s7]
+        with open("datoteke/jedilnik.txt", "r") as file:
+            while True:
+                s = file.readline()
+                if(len(s) == 0):
+                    break
+                t = s.split(".")
+                dat = datum(int(t[0]), int(t[1]), int(t[2]))
+                s0 = "Odjava"
+                s1 = file.readline()[1:]
+                s2 = file.readline()[1:]
+                s3 = file.readline()[1:]
+                s4 = "ocvrti sir s prilogo in solato"
+                s5 = "mesana solata s tuno"
+                s6 = "mesana solata s piscancjimi trakci"
+                s7 = "sadna malica, ki vsebuje 0,70kg sadja in 0,5l navadnega jogurta"
+                this.jedilnik[dat] = [s0, s1, s2, s3, s4, s5, s6, s7]
 
     def statistika(this):
         ans=None
@@ -156,73 +156,73 @@ class Model:
         if(ctime.hour >= 12):
             mindate = datum((ctime+timedelta(days=1)).day, (ctime +
                             timedelta(days=1)).month, (ctime+timedelta(days=1)).year)
-        file = open("datoteke/jedilnik.txt", "r")
-        while True:
-            s = file.readline()
-            if(len(s) == 0):
-                break
-            t = s.split(".")
-            dan = datum(int(t[0]), int(t[1]), int(t[2]))
-            s0 = "Odjava"
-            s1 = file.readline()[1:]
-            s2 = file.readline()[1:]
-            s3 = file.readline()[1:]
-            s4 = "ocvrti sir s prilogo in solato"
-            s5 = "mesana solata s tuno"
-            s6 = "mesana solata s piscancjimi trakci"
-            s7 = "sadna malica, ki vsebuje 0,70kg sadja in 0,5l navadnega jogurta"
-            arr = [s0, s1, s2, s3, s4, s5, s6, s7]
-            if(dan == mindate):
-                cache = []
-                ans = [0]*8
-                for podjetje in this.podjetja:
-                    ap = [0]*8
-                    for uporabnik in this.users:
-                        if(uporabnik.podjetje == podjetje.ime):
-                            meni = uporabnik.getMenu(dan)
-                            ap[meni] += 1
-                            ans[meni] += 1
-                    cache.append(ap)
-                return (ans, arr, cache,dan)
+        with open("datoteke/jedilnik.txt", "r") as file:
+            while True:
+                s = file.readline()
+                if(len(s) == 0):
+                    break
+                t = s.split(".")
+                dan = datum(int(t[0]), int(t[1]), int(t[2]))
+                s0 = "Odjava"
+                s1 = file.readline()[1:]
+                s2 = file.readline()[1:]
+                s3 = file.readline()[1:]
+                s4 = "ocvrti sir s prilogo in solato"
+                s5 = "mesana solata s tuno"
+                s6 = "mesana solata s piscancjimi trakci"
+                s7 = "sadna malica, ki vsebuje 0,70kg sadja in 0,5l navadnega jogurta"
+                arr = [s0, s1, s2, s3, s4, s5, s6, s7]
+                if(dan == mindate):
+                    cache = []
+                    ans = [0]*8
+                    for podjetje in this.podjetja:
+                        ap = [0]*8
+                        for uporabnik in this.users:
+                            if(uporabnik.podjetje == podjetje.ime):
+                                meni = uporabnik.getMenu(dan)
+                                ap[meni] += 1
+                                ans[meni] += 1
+                        cache.append(ap)
+                    return (ans, arr, cache,dan)
         return None
 
     def readSaveFile(this):
         # print("read")
-        file = open("datoteke/podatki.txt", "r")
-        this.users = []
-        for line in file:
-            # print(line)
-            arr = line.split()
-            ime = arr[0]
-            geslo = arr[1]
-            podjetje1 = arr[2]
-            spremembe = arr[3]
-            this.users.append(uporabnik(ime, geslo, podjetje1, spremembe))
-        file.close()
+        with open("datoteke/podatki.txt", "r") as file:
+            this.users = []
+            for line in file:
+                # print(line)
+                arr = line.split()
+                ime = arr[0]
+                geslo = arr[1]
+                podjetje1 = arr[2]
+                spremembe = arr[3]
+                this.users.append(uporabnik(ime, geslo, podjetje1, spremembe))
+            file.close()
 
-        file = open("datoteke/podjetja.txt", "r")
-        this.podjetja = []
-        for line in file:
-            # print(line)
-            arr = line.split()
-            ime = arr[0]
-            geslo = arr[1]
-            this.podjetja.append(podjetje(ime, geslo))
-        file.close()
+        with open("datoteke/podjetja.txt", "r") as file:
+            this.podjetja = []
+            for line in file:
+                # print(line)
+                arr = line.split()
+                ime = arr[0]
+                geslo = arr[1]
+                this.podjetja.append(podjetje(ime, geslo))
+            file.close()
 
     def writeSaveFile(this):
         print("write")
-        file = open("datoteke/podatki.txt", "w")
-        for user in this.users:
-            # print(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe)
-            file.write(user.ime+" "+user.geslo+" " +
-                       user.podjetje+" "+user.spremembe+"\n")
-        file.close()
-        file = open("datoteke/podjetja.txt", "w")
-        for podjetje in this.podjetja:
-            # print(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe)
-            file.write(podjetje.ime+" "+podjetje.geslo+"\n")
-        file.close()
+        with open("datoteke/podatki.txt", "w") as file:
+            for user in this.users:
+                # print(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe)
+                file.write(user.ime+" "+user.geslo+" " +
+                        user.podjetje+" "+user.spremembe+"\n")
+            file.close()
+        with open("datoteke/podjetja.txt", "w") as file:
+            for podjetje in this.podjetja:
+                # print(user.ime+" "+user.geslo+" "+user.podjetje+" "+user.spremembe)
+                file.write(podjetje.ime+" "+podjetje.geslo+"\n")
+            file.close()
         this.readSaveFile()
 
     def check_password(this, username, password):
@@ -240,7 +240,7 @@ class Model:
     def check_password_company_admin(this, podjetje, geslo):
         for p in this.podjetja:
             if p.ime == podjetje:
-                return this.verify_password("8b1601a9728a972ba6014e8f52232e16fe23b03bee194d4071fbfe233123bd847e5f03fe95d405b25693e4fa94d1bdae5477ca0c17f60aa37a03f828cb5a94edced7ccafaaa5ef3eac6c6cf852b7d59da960b00b22001768235fac56c74f64ec", geslo)
+                return this.verify_password("86103cca06cf7f4ce0b7358361324a6873939963a49a1257223d349af0fd3e693b84deacc47cab8971d658ffedf6ed9e29ac50d77d11171a2efe133e35b87937615f045de848178f2042b3c03b4a58f2c14efeea988322d69b29784bb10038cf", geslo)
         return False
 
     def getUser(this, ime):
